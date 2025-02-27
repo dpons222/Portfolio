@@ -63,6 +63,8 @@ class PermutationImportanceWrapper(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y):
         self.estimator.fit(X, y)
+        self.X_train = X
+        self.y_train = y
         return self
 
     def predict(self, X):
@@ -73,6 +75,6 @@ class PermutationImportanceWrapper(BaseEstimator, ClassifierMixin):
 
     @property
     def feature_importances_(self):
-        result = permutation_importance(self.estimator, X, y, n_repeats=5, random_state=self.random_state)
+        result = permutation_importance(self.estimator, self.X_train, self.y_train, n_repeats=5, random_state=self.random_state)
         return result.importances_mean
 
